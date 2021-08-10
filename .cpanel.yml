@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/epictechs/public_html/
+    - export DEPLOYPATH=/home/epictechs/public_html/skillshub
     - /bin/cp -R * $DEPLOYPATH
