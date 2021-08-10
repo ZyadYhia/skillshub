@@ -1,7 +1,7 @@
 @extends('web.layout')
-@section('title')
+{{-- @section('title')
 Home Page
-@endsection
+@endsection --}}
 @section('main')
 
     <!-- Home -->
