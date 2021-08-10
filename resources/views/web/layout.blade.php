@@ -38,9 +38,10 @@
     @yield('styles')
 
     <style>
-        input:checked ~ .checkmark:after {
+        input:checked~.checkmark:after {
             background-color: #FF6700;
         }
+
     </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -125,16 +126,21 @@
     <script type="text/javascript" src="{{ asset('web/js/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('web/js/jquery.nicescroll.min.js') }}"></script>
     <script>
-        $("html").niceScroll({
-            cursorcolor: "#FF6700",
-            cursorwidth: "6px",
-            railpadding: {
-                top: 10,
-                right: 5,
-                left: 5,
-                bottom: 10
-            },
-        });
+        (() => {
+            let x = window.matchMedia("(min-width: 1200px)");
+            if (x.matches) {
+                $("html").niceScroll({
+                    cursorcolor: "#FF6700",
+                    cursorwidth: "6px",
+                    railpadding: {
+                        top: 10,
+                        right: 5,
+                        left: 5,
+                        bottom: 10
+                    },
+                });
+            }
+        })();
     </script>
     <script>
         $("#logout-link").click(function(e) {
