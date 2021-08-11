@@ -17,7 +17,8 @@
                 <div class="col-md-10 col-md-offset-1 text-center">
                     <ul class="hero-area-tree">
                         <li><a href="index.html">{{ __('web.home') }}</a></li>
-                        <li><a href="{{ url("categories/show/$exam->skill->cat->id") }}">{{ $exam->skill->cat->name() }}</a>
+                        <li><a
+                                href="{{ url("categories/show/$exam->skill->cat->id") }}">{{ $exam->skill->cat->name() }}</a>
                         </li>
                         <li><a href="{{ url("skills/show/$exam->skill->cat->id") }}">{{ $exam->skill->name() }}</a></li>
                         <li>{{ $exam->name() }}</li>
@@ -56,7 +57,9 @@
                     <!-- /blog post -->
 
                     <div>
-                        <a href="{{url("exams/questions/$exam->id")}}" class="main-button icon-button pull-left">Start Exam</a>
+                        <form action="{{ url("exams/start/{$exam->id}") }}" method="post">@csrf
+                            <button type="submit" class="main-button icon-button pull-left">Start Exam</button>
+                        </form>
                     </div>
                 </div>
                 <!-- /main blog -->

@@ -54,7 +54,7 @@
                             @foreach ($exam->questions as $index=>$question)
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">{{$index + 1}}- {{$question->title}}?</h3>
+                                        <h3 class="panel-title">{{$index + 1}}- {{$question->title}}</h3>
                                     </div>
                                     <div class="panel-body">
                                         <div class="radio">

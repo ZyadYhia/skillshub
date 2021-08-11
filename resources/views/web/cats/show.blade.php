@@ -53,8 +53,7 @@
                                             <img src="{{ asset("uploads/$skill->img") }}" alt="">
                                         </a>
                                     </div>
-                                    <h4><a href="{{url("skills/show/$skill->id")}}">Pro eu error molestie deserunt. At per viderer bonorum
-                                            persecuti.</a></h4>
+                                    <h4><a href="{{url("skills/show/$skill->id")}}">{{$skill->name()}}</a></h4>
                                     <div class="blog-meta">
                                         {{-- <span>18 Oct, 2017</span> --}}
                                         <span>{{ Carbon\Carbon::parse($skill->created_at)->format('d M, Y') }}</span>
