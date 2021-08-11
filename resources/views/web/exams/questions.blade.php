@@ -1,4 +1,7 @@
 @extends('web.layout')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('web/css/TimeCircles.css') }}">
+@endsection
 @section('title')
     {{ $exam->name() }} -Questions
 @endsection
@@ -16,7 +19,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 text-center">
                     <ul class="hero-area-tree">
-                        <li><a href="{{url('/')}}">{{ __('web.home') }}</a></li>
+                        <li><a href="{{ url('/') }}">{{ __('web.home') }}</a></li>
                         <li><a href="">{{ $exam->skill->cat->name() }}</a>
                         </li>
                         <li><a href="">{{ $exam->skill->name() }}</a></li>
@@ -46,43 +49,43 @@
 
                 <!-- main blog -->
                 <div id="main" class="col-md-9">
-
+                    <form action="{{url("exams/submit/$exam->id")}}" method="post" id="exam-submit-form">@csrf</form>
                     <!-- blog post -->
                     <div class="blog-post mb-5">
                         <p>
 
-                            @foreach ($exam->questions as $index=>$question)
+                            @foreach ($exam->questions as $index => $question)
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">{{$index + 1}}- {{$question->title}}</h3>
+                                        <h3 class="panel-title">{{ $index + 1 }}- {{ $question->title }}</h3>
                                     </div>
                                     <div class="panel-body">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="optionsRadios1"
+                                                <input type="radio" name="answers[{{$question->id}}]" form="exam-submit-form" value="1" id="optionsRadios1"
                                                     value="option1">
-                                                {{$question->option_1}}
+                                                {{ $question->option_1 }}
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="optionsRadios2"
+                                                <input type="radio" name="answers[{{$question->id}}]" form="exam-submit-form" value="2" id="optionsRadios2"
                                                     value="option2">
-                                                {{$question->option_2}}
+                                                {{ $question->option_2 }}
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="optionsRadios3"
+                                                <input type="radio" name="answers[{{$question->id}}]" form="exam-submit-form" value="3" id="optionsRadios3"
                                                     value="option3">
-                                                {{$question->option_3}}
+                                                {{ $question->option_3 }}
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="optionsRadios3"
+                                                <input type="radio" name="answers[{{$question->id}}]" form="exam-submit-form" value="4" id="optionsRadios3"
                                                     value="option3">
-                                                {{$question->option_4}}
+                                                {{ $question->option_4 }}
                                             </label>
                                         </div>
                                     </div>
@@ -95,7 +98,7 @@
                     <!-- /blog post -->
 
                     <div>
-                        <button class="main-button icon-button pull-left">Submit</button>
+                        <button type="submit" form="exam-submit-form" class="main-button icon-button pull-left">Submit</button>
                         <button class="main-button icon-button btn-danger pull-left ml-sm">Cancel</button>
                     </div>
                 </div>
@@ -120,6 +123,7 @@
                     </ul>
                     <!-- /exam details widget -->
 
+                    <div class="duration-count-down" data-timer="{{$exam->duration_mins * 60}}"></div>
 
 
                 </div>
@@ -134,4 +138,22 @@
     </div>
     <!-- /Blog -->
 
+@endsection
+@section('scripts')
+    <script type="text/javascript" src="{{ asset('web/js/TimeCircles.js') }}"></script>
+    <script>
+        $(".duration-count-down").TimeCircles({
+            count_past_zero: false,
+            time:{
+                Days:{
+                    show: false
+                }
+            }
+        }).addListener(function(unit, value, total) {
+            if (total <= 0) {
+                $("#exam-submit-form").submit();
+            }
+        });
+
+    </script>
 @endsection
