@@ -3,11 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class isAdmin
+class canEnterExam
 {
     /**
      * Handle an incoming request.
@@ -18,9 +17,12 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role->name == 'admin')  {
-            return $next($request);
+        $examId = $request->route()->parameter('id');
+        $user = Auth::user();
+        $pivotRow = $user->exams()->where('exam_id', $examId)->first();
+        if ($pivotRow !== null and $pivotRow->pivot->status == 'closed') {
+            return redirect(url(''));
         }
-        return redirect(url(''));
+        return $next($request);
     }
 }

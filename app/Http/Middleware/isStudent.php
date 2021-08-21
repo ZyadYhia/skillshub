@@ -18,10 +18,9 @@ class isStudent
      */
     public function handle(Request $request, Closure $next)
     {
-        $studelnRole = Role::where('name','student')->first();
-        if (Auth::user()->role_id !== $studelnRole->id) {
-            return redirect(url(''));
+        if (Auth::user()->role->name == 'student')  {
+            return $next($request);
         }
-        return $next($request);
+        return redirect(url(''));
     }
 }

@@ -30,4 +30,6 @@ return [
     'resend_email' => 'أعد الإرسال',
     'forget_password' => 'نسيت كلمة المرور',
     'submit' => 'إرسال',
+    'profile' => 'الصفحة الشخصية',
+    'dashboard' =>'لوحة التحكم',
 ];

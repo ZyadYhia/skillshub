@@ -30,4 +30,6 @@ return [
     'resend_email'=> 'Resend Email',
     'forget_password' => 'Forget Password',
     'submit' => 'Submit',
+    'profile' => 'profile',
+    'dashboard' =>'Dashboard',
 ];

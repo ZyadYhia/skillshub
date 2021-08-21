@@ -10,7 +10,7 @@ class SkillController extends Controller
 {
     public function show($id)
     {
-        $data['skill']=Skill::findOrFail($id);
+        $data['skill']=Skill::active()->findOrFail($id);
         return view('web.skills.show')->with($data);
     }
 }

@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data['cats'] = Cat::select('id','name')->get();
-        $data['skills'] = Cat::select('id','name')->get();
+        $data['cats'] = Cat::active()->select('id','name')->get();
+        $data['skills'] = Cat::active()->select('id','name')->get();
         return view('web.home.index')->with($data);
     }
 }
