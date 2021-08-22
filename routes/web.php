@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\CatController as AdminCatController;
+use App\Http\Controllers\admin\ExamController as AdminExamController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\SkillController as AdminSkillController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,7 @@ Route::middleware(['lang'])->group(function () {
 Route::post('/exams/start/{id}', [ExamController::class, 'start'])->middleware(['auth', 'verified', 'student', 'can-enter-exam']);
 Route::post('/exams/submit/{id}', [ExamController::class, 'submit'])->middleware(['auth', 'verified', 'student']);
 Route::get('/lang/set/{lang}', [LangController::class, 'set']);
+
 Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard'])->group(function () {
     Route::get('', [AdminHomeController::class, 'index']);
 
@@ -52,4 +54,18 @@ Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard
     Route::get('skills/delete/{skill}', [AdminSkillController::class, 'delete']);
     Route::post('skills/store', [AdminSkillController::class, 'store']);
     Route::post('skills/update', [AdminSkillController::class, 'update']);
+
+    Route::get('exams', [AdminExamController::class, 'index']);
+    Route::get('exams/toggle/{exam}', [AdminExamController::class, 'toggle']);
+    Route::get('exams/show/{exam}', [AdminExamController::class, 'show']);
+    Route::get('exams/show-questions/{exam}', [AdminExamController::class, 'showQuestions']);
+    Route::get('exams/edit-questions/{exam}/{question}', [AdminExamController::class, 'editQuestion']);
+    Route::post('exams/update-questions/{exam}/{question}', [AdminExamController::class, 'updateQuestion']);
+    Route::get('exams/edit/{exam}', [AdminExamController::class, 'edit']);
+    Route::post('exams/update/{exam}', [AdminExamController::class, 'update']);
+    Route::get('exams/create-questions/{exam}', [AdminExamController::class, 'createQuestions']);
+    Route::post('exams/store-questions/{exam}', [AdminExamController::class, 'storeQuestions']);
+    Route::get('exams/create', [AdminExamController::class, 'create']);
+    Route::post('exams/store', [AdminExamController::class, 'store']);
+    Route::get('exams/delete/{exam}', [AdminExamController::class, 'delete']);
 });

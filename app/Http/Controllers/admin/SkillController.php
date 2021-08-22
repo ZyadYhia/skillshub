@@ -62,7 +62,7 @@ class SkillController extends Controller
     }
 
 
-    public function update2(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:skills,id',

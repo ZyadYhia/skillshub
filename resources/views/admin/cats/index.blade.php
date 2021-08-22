@@ -60,7 +60,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $cat->name('en') }}</td>
-                                                <td>{{ $cat->name('ar') }}</td>
+                                                <td style="direction: rtl;">{{ $cat->name('ar') }}</td>
                                                 <td>
                                                     @if ($cat->active)
                                                         <a href="#" class="badge badge-success">Active</a>
