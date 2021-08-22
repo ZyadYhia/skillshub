@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\CatController as AdminCatController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
+use App\Http\Controllers\admin\SkillController as AdminSkillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\CatController;
 use App\Http\Controllers\web\ExamController;
@@ -39,9 +40,16 @@ Route::post('/exams/submit/{id}', [ExamController::class, 'submit'])->middleware
 Route::get('/lang/set/{lang}', [LangController::class, 'set']);
 Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard'])->group(function () {
     Route::get('', [AdminHomeController::class, 'index']);
+
     Route::get('categories', [AdminCatController::class, 'index']);
     Route::get('categories/toggle/{cat}', [AdminCatController::class, 'toggle']);
     Route::get('categories/delete/{cat}', [AdminCatController::class, 'delete']);
     Route::post('categories/store', [AdminCatController::class, 'store']);
     Route::post('categories/update', [AdminCatController::class, 'update']);
+
+    Route::get('skills', [AdminSkillController::class, 'index']);
+    Route::get('skills/toggle/{skill}', [AdminSkillController::class, 'toggle']);
+    Route::get('skills/delete/{skill}', [AdminSkillController::class, 'delete']);
+    Route::post('skills/store', [AdminSkillController::class, 'store']);
+    Route::post('skills/update', [AdminSkillController::class, 'update']);
 });

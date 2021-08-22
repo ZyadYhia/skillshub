@@ -32,7 +32,6 @@ class CatController extends Controller
     }
     public function update(Request $request)
     {
-
         $request->validate([
             'id' =>'exists:cats,id',
             'name_en' => 'required|string|max:50',

@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Categories</h1>
+                        <h1 class="m-0 text-dark">Skills</h1>
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-6">
@@ -15,7 +15,7 @@
                                 <a href="{{ url('dashboard') }}">Home</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Categories
+                                Skills
                             </li>
                         </ol>
                     </div>
@@ -34,12 +34,12 @@
                         @include('admin.includes.messages')
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">All Categories</h3>
+                                <h3 class="card-title">All Skills</h3>
 
                                 <div class="card-tools">
                                     <button id="add-cart-modat" type="button" class="btn btn-primary btn-sm"
                                         data-toggle="modal" data-target="#new-modal">
-                                        Add Category
+                                        Add Skill
                                     </button>
                                 </div>
                             </div>
@@ -51,40 +51,49 @@
                                             <th>ID</th>
                                             <th>Name (EN)</th>
                                             <th>Name (AR)</th>
+                                            <th>Image</th>
+                                            <th>Category</th>
                                             <th>Active</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($cats as $cat)
+                                        @foreach ($skills as $skill)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $cat->name('en') }}</td>
-                                                <td>{{ $cat->name('ar') }}</td>
+                                                <td>{{ $skill->name('en') }}</td>
+                                                <td>{{ $skill->name('ar') }}</td>
                                                 <td>
-                                                    @if ($cat->active)
+                                                    <img src="{{ asset("uploads/$skill->img") }}" height="50px" alt="">
+                                                </td>
+                                                <td>{{ $skill->cat->name('en') }}</td>
+                                                <td>
+                                                    @if ($skill->active)
                                                         <a href="#" class="badge badge-success">Active</a>
                                                     @else
                                                         <a href="#" class="badge badge-danger">Deactive</a>
-
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-info btn-sm edit-btn"
-                                                        data-id="{{ $cat->id }}"
-                                                        data-name-en="{{ $cat->name('en') }}"
-                                                        data-name-ar="{{ $cat->name('ar') }}" data-toggle="modal"
+                                                        data-id="{{ $skill->id }}"
+                                                        data-name-en="{{ $skill->name('en') }}"
+                                                        data-img="{{ $skill->img }}"
+                                                        data-cat-id="{{ $skill->cat_id }}"
+                                                        data-name-ar="{{ $skill->name('ar') }}" data-toggle="modal"
                                                         data-target="#edit-modal">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <a href="{{ url("dashboard/categories/delete/$cat->id") }}"
+                                                    <a href="{{ url("dashboard/skills/delete/$skill->id") }}"
                                                         class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
-                                                    @if ($cat->active)
-                                                    <a href="{{ url("dashboard/categories/toggle/$cat->id") }}"
-                                                        class="btn btn-light btn-sm"><i class="fas fa-toggle-on"></i></a>
+                                                    @if ($skill->active)
+                                                        <a href="{{ url("dashboard/skills/toggle/$skill->id") }}"
+                                                            class="btn btn-light btn-sm"><i
+                                                                class="fas fa-toggle-on"></i></a>
                                                     @else
-                                                    <a href="{{ url("dashboard/categories/toggle/$cat->id") }}"
-                                                        class="btn btn-light btn-sm"><i class="fas fa-toggle-off"></i></a>
+                                                        <a href="{{ url("dashboard/skills/toggle/$skill->id") }}"
+                                                            class="btn btn-light btn-sm"><i
+                                                                class="fas fa-toggle-off"></i></a>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -93,7 +102,7 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center my-3">
-                                    {{ $cats->links() }}
+                                    {{ $skills->links() }}
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -110,13 +119,14 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Category</h4>
+                    <h4 class="modal-title">New Skill</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="add-new-cat-form" action="{{ url('dashboard/categories/store') }}" method="POST">
+                    @include('admin.includes.errors')
+                    <form id="add-new-form" enctype="multipart/form-data" action="{{ url('dashboard/skills/store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-6">
@@ -132,11 +142,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleSelectBorder">Category:</label>
+                                    <select class="custom-select form-control-border" name="cat_id">
+                                        @foreach ($cats as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->name('en') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Image:</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="img">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" form="add-new-cat-form" class="btn btn-primary">Submit</button>
+                    <button type="submit" form="add-new-form" class="btn btn-primary">Submit</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -148,26 +181,51 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Category</h4>
+                    <h4 class="modal-title">Edit Skill</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-cat-form" action="{{ url('dashboard/categories/update') }}" method="POST">
+                    @include('admin.includes.errors')
+                    <form id="edit-form" enctype="multipart/form-data" action="{{ url('dashboard/skills/update') }}"
+                        method="POST">
                         @csrf
-                        <input type="hidden" name="id" id="edit-cat-form-id">
+                        <input type="hidden" name="id" id="edit-form-id">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Name (EN)</label>
-                                    <input type="text" class="form-control" id="edit-cat-form-name_en" name="name_en">
+                                    <label>Name (EN):</label>
+                                    <input type="text" class="form-control" id="edit-form-name_en" name="name_en">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Name (AR)</label>
-                                    <input type="text" class="form-control" id="edit-cat-form-name_ar" name="name_ar">
+                                    <label>Name (AR):</label>
+                                    <input type="text" class="form-control" id="edit-form-name_ar" name="name_ar">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleSelectBorder">Category:</label>
+                                    <select class="custom-select form-control-border" id="edit-form-cat_id" name="cat_id">
+                                        @foreach ($cats as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->name('en') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Image:</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="img">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +233,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" form="edit-cat-form" class="btn btn-primary">Update</button>
+                    <button type="submit" form="edit-form" class="btn btn-primary">Update</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -189,9 +247,12 @@
             let id = $(this).attr('data-id');
             let nameEn = $(this).attr('data-name-en');
             let nameAr = $(this).attr('data-name-ar');
-            $('#edit-cat-form-id').val(id)
-            $('#edit-cat-form-name_en').val(nameEn)
-            $('#edit-cat-form-name_ar').val(nameAr)
+            let img = $(this).attr('data-img');
+            let catId = $(this).attr('data-cat-id');
+            $('#edit-form-id').val(id)
+            $('#edit-form-name_en').val(nameEn)
+            $('#edit-form-name_ar').val(nameAr)
+            $('#edit-form-cat_id').val(catId)
         })
     </script>
 @endsection
