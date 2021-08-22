@@ -25,7 +25,7 @@ class SkillController extends Controller
             'img' => 'required|image|max:2048',
             'cat_id' => 'required|exists:cats,id'
         ]);
-        $path = Storage::putFile('skills',$request->file('img'));
+        $path = Storage::putFile('skills', $request->file('img'));
         Skill::create([
             'name' => json_encode([
                 'en' => $request->name_en,
@@ -53,7 +53,16 @@ class SkillController extends Controller
         return  back();
     }
 
-    public function update(Request $request)
+    public function toggle(Skill $skill)
+    {
+        $skill->update([
+            'active' => !$skill->active,
+        ]);
+        return back();
+    }
+
+
+    public function update2(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:skills,id',
