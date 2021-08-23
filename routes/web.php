@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\admin\CatController as AdminCatController;
-use App\Http\Controllers\admin\ExamController as AdminExamController;
-use App\Http\Controllers\admin\HomeController as AdminHomeController;
-use App\Http\Controllers\admin\SkillController as AdminSkillController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\web\CatController;
 use App\Http\Controllers\web\ExamController;
 use App\Http\Controllers\web\HomeController;
@@ -14,6 +11,10 @@ use App\Http\Controllers\web\LangController;
 use App\Http\Controllers\web\SkillController;
 use App\Http\Controllers\web\ContactController;
 use App\Http\Controllers\web\ProfileController;
+use App\Http\Controllers\admin\CatController as AdminCatController;
+use App\Http\Controllers\admin\ExamController as AdminExamController;
+use App\Http\Controllers\admin\HomeController as AdminHomeController;
+use App\Http\Controllers\admin\SkillController as AdminSkillController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,4 +84,8 @@ Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard
         Route::get('admins/demote/{id}', [AdminController::class, 'demote']);
         Route::get('admins/delete/{user}', [AdminController::class, 'delete']);
     });
+
+    Route::get('messages', [MessageController::class, 'index']);
+    Route::get('messages/show/{message}', [MessageController::class, 'show']);
+    Route::post('messages/response/{message}', [MessageController::class, 'response']);
 });
