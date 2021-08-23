@@ -98,6 +98,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <p>Exams</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{url('dashboard/students')}}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-graduate"></i>
+                                    <p>Students</p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

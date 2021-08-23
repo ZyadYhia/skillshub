@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\CatController as AdminCatController;
 use App\Http\Controllers\admin\ExamController as AdminExamController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\SkillController as AdminSkillController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\CatController;
 use App\Http\Controllers\web\ExamController;
@@ -68,4 +69,10 @@ Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard
     Route::get('exams/create', [AdminExamController::class, 'create']);
     Route::post('exams/store', [AdminExamController::class, 'store']);
     Route::get('exams/delete/{exam}', [AdminExamController::class, 'delete']);
+
+    Route::get('students', [StudentController::class, 'index']);
+    Route::get('students/show-scores/{id}', [StudentController::class, 'showScores']);
+    Route::get('students/open-exam/{studentId}/{examId}', [StudentController::class, 'openExam']);
+    Route::get('students/close-exam/{studentId}/{examId}', [StudentController::class, 'closeExam']);
+
 });

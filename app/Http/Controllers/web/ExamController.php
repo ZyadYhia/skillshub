@@ -29,15 +29,22 @@ class ExamController extends Controller
         if (session('prev') !== "start/$examId") {
             return redirect(url("exams/show/$examId"));
         }
-        $request->session()->flash('prev',"questions/$examId");
+        $request->session()->flash('prev', "questions/$examId");
         $data['exam'] = Exam::findOrFail($examId);
         return view('web.exams.questions')->with($data);
     }
     public function start($examId, Request $request)
     {
         $user = Auth::user();
-        $user->exams()->attach($examId);
-        $request->session()->flash('prev',"start/$examId");
+        if (!$user->exams->contains($examId)) {
+            $user->exams()->attach($examId);
+        } else {
+            $user->exams()->updateExistingPivot($examId, [
+                'status' => 'closed',
+            ]);
+        }
+
+        $request->session()->flash('prev', "start/$examId");
         return redirect(url("exams/questions/$examId"));
     }
 
