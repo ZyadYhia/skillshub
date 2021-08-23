@@ -25,19 +25,6 @@ class StudentController extends Controller
         $data['exams'] =  $data['student']->exams;
         return view('admin.students.show-score')->with($data);
     }
-    // public function toggleExam($studentId, $examId)
-    // {
-    //     $student = User::findOrFail($studentId);
-    //     if ($student->exam->status == "closed") {
-    //         $status = "opened";
-    //     } else if ($student->exam->status == "opened"){
-    //         $status = "closed";
-    //     }
-    //     $student->exams()->updateExistingPivot($examId,[
-    //         'status' => $status,
-    //     ]);
-    //     return back();
-    // }
     public function openExam($studentId, $examId)
     {
         $student = User::findOrFail($studentId);

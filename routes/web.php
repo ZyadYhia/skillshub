@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\CatController as AdminCatController;
 use App\Http\Controllers\admin\ExamController as AdminExamController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\SkillController as AdminSkillController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\CatController;
@@ -34,7 +35,6 @@ Route::middleware(['lang'])->group(function () {
     Route::get('/contact', [ContactController::class, 'index']);
     Route::post('/contact/message/send', [ContactController::class, 'send']);
     Route::get('/profile', [ProfileController::class, 'index'])->middleware(['auth', 'verified', 'student']);
-
 });
 
 Route::post('/exams/start/{id}', [ExamController::class, 'start'])->middleware(['auth', 'verified', 'student', 'can-enter-exam']);
@@ -75,4 +75,12 @@ Route::prefix('dashboard')->middleware(['auth', 'verified', 'can-enter-dashboard
     Route::get('students/open-exam/{studentId}/{examId}', [StudentController::class, 'openExam']);
     Route::get('students/close-exam/{studentId}/{examId}', [StudentController::class, 'closeExam']);
 
+    Route::middleware('superadmin')->group(function () {
+        Route::get('admins', [AdminController::class, 'index']);
+        Route::get('admins/create', [AdminController::class, 'create']);
+        Route::post('admins/store', [AdminController::class, 'store']);
+        Route::get('admins/promote/{id}', [AdminController::class, 'promote']);
+        Route::get('admins/demote/{id}', [AdminController::class, 'demote']);
+        Route::get('admins/delete/{user}', [AdminController::class, 'delete']);
+    });
 });
