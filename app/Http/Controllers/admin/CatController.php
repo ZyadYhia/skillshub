@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
+use Exception;
 use App\Models\Cat;
 use Illuminate\Http\Request;
+use App\Events\CatAddedEvent;
+use App\Events\CatToggleEvent;
 use App\Http\Controllers\Controller;
-use Exception;
 
 class CatController extends Controller
 {
@@ -27,7 +29,7 @@ class CatController extends Controller
             ])
         ]);
         $request->session()->flash('msg','row added successfully');
-
+        event(new CatAddedEvent("$request->name_en Category Added"));
         return back();
     }
     public function update(Request $request)
@@ -49,12 +51,14 @@ class CatController extends Controller
     public function delete(Request $request, Cat $cat)
     {
         try {
+            $catName = $cat->name('en');
             $cat->delete();
             $msg = 'row deleted successfully';
         } catch (Exception $e) {
             $msg ="row can't br deleted";
         }
         $request->session()->flash('msg',$msg);
+        event(new CatAddedEvent("$catName Category was Deleted"));
         return  back();
     }
     public function toggle(Cat $cat)
@@ -62,6 +66,8 @@ class CatController extends Controller
         $cat->update([
             'active' => !$cat->active,
         ]);
+        $catName = $cat->name('en');
+        event(new CatToggleEvent("$catName Category's status changed"));
         return back();
     }
 }

@@ -7,6 +7,9 @@ use App\Models\Exam;
 use App\Models\Skill;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Events\ExamAddedEvent;
+use App\Events\ExamToggleEvent;
+use App\Events\ExamDeletedEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -108,6 +111,9 @@ class ExamController extends Controller
         $exam->update([
             'active' => 1,
         ]);
+        $examName = $exam->name('en');
+        event(new ExamAddedEvent("$examName Exam Added Successfuly"));
+
         return redirect(url("dashboard/exams"));
     }
     public function edit(Exam $exam)
@@ -158,11 +164,15 @@ class ExamController extends Controller
                 'active' => !$exam->active,
             ]);
         }
+        $examName = $exam->name('en');
+        event(new ExamToggleEvent("$examName Exam's status changed"));
+
         return back();
     }
     public function delete(Request $request, Exam $exam)
     {
         try {
+            $examName = $exam->name('en');
             $path = $exam->img;
             $exam->questions()->delete();
             Storage::delete($path);
@@ -171,6 +181,7 @@ class ExamController extends Controller
         } catch (Exception $e) {
             $msg = "row can't br deleted";
         }
+        event(new ExamDeletedEvent("$examName Exam was Deleted"));
         $request->session()->flash('msg', $msg);
         return back();
     }

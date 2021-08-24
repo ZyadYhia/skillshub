@@ -6,6 +6,9 @@ use Exception;
 use App\Models\Cat;
 use App\Models\Skill;
 use Illuminate\Http\Request;
+use App\Events\SkillAddedEvent;
+use App\Events\SkillToggleEvent;
+use App\Events\SkillDeletedEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +39,7 @@ class SkillController extends Controller
 
         ]);
         $request->session()->flash('msg', 'row added successfully');
-
+        event(new SkillAddedEvent("$request->name_en Skill Added Successfuly"));
         return back();
     }
     public function delete(Request $request, Skill $skill)
@@ -50,6 +53,8 @@ class SkillController extends Controller
             $msg = "row can't br deleted";
         }
         $request->session()->flash('msg', $msg);
+        $skillName = $skill->name('en');
+        event(new SkillDeletedEvent("$skillName Skill was Deleted"));
         return  back();
     }
 
@@ -58,6 +63,8 @@ class SkillController extends Controller
         $skill->update([
             'active' => !$skill->active,
         ]);
+        $skillName = $skill->name('en');
+        event(new SkillToggleEvent("$skillName Skill's status changed"));
         return back();
     }
 

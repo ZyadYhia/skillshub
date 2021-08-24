@@ -35,6 +35,7 @@
 
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('web/css/style.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('web/css/toastr.min.css') }}" />
     @yield('styles')
 
     <style>
@@ -125,6 +126,7 @@
     <script type="text/javascript" src="{{ asset('web/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('web/js/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('web/js/jquery.nicescroll.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('web/js/toastr.min.js') }}"></script>
     <script>
         (() => {
             let x = window.matchMedia("(min-width: 1200px)");
@@ -146,6 +148,50 @@
         $("#logout-link").click(function(e) {
             e.preventDefault();
             $("#logout-form").submit();
+        });
+    </script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        let pusher = new Pusher('29c3cfe554aee829628f', {
+            cluster: 'eu'
+        });
+
+        let notifications = pusher.subscribe('notifications-channel');
+        notifications.bind('exam-added', function(data) {
+            toastr.success(data.message);
+        });
+        notifications.bind('skill-added', function(data) {
+            toastr.success(data.message);
+        });
+        notifications.bind('cat-added', function(data) {
+            toastr.success(data.message);
+        });
+
+        //---------------------------------------
+
+        notifications.bind('exam-deleted', function(data) {
+            toastr.error(data.message);
+        });
+        notifications.bind('skill-deleted', function(data) {
+            toastr.error(data.message);
+        });
+        notifications.bind('cat-deleted', function(data) {
+            toastr.error(data.message);
+        });
+
+        //-----------------------------------------
+
+        notifications.bind('exam-toggled', function(data) {
+            toastr.warning(data.message);
+        });
+        notifications.bind('skill-toggled', function(data) {
+            toastr.warning(data.message);
+        });
+        notifications.bind('cat-toggled', function(data) {
+            toastr.warning(data.message);
         });
     </script>
     @yield('scripts')
