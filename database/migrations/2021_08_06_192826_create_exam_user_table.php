@@ -14,7 +14,7 @@ class CreateExamUserTable extends Migration
     public function up()
     {
         Schema::create('exam_user', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('exam_id')->constrained();
             $table->float('score',5,2)->nullable();

@@ -39,8 +39,6 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
         ]);
-        //event to send verification mail
-        event(new Registered($user));
         return redirect(url("dashboard/admins"));
     }
     public function promote($id)

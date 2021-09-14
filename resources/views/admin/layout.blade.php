@@ -29,6 +29,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('admin/css/fontawesome.all.css') }}" />
+    <!-- Select2 style -->
+    <link rel="stylesheet" href="{{ asset('admin/css/select2.min.css') }}" />
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin/css/adminlte.css') }}" />
     <!-- Google Font: Source Sans Pro -->
@@ -161,6 +163,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('admin/js/bootstrap.bundle.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('admin/js/adminlte.js') }}"></script>
+    <!-- Select2 App -->
+    <script src="{{ asset('admin/js/select2.full.min.js') }}"></script>
     @yield('scripts')
 </body>
 

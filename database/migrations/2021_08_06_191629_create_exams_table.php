@@ -14,7 +14,7 @@ class CreateExamsTable extends Migration
     public function up()
     {
         Schema::create('exams', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('name');
             $table->text('desc');
             $table->string('img',50);

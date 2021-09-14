@@ -78,8 +78,7 @@
                                                     <button type="button" class="btn btn-info btn-sm edit-btn"
                                                         data-id="{{ $skill->id }}"
                                                         data-name-en="{{ $skill->name('en') }}"
-                                                        data-img="{{ $skill->img }}"
-                                                        data-cat-id="{{ $skill->cat_id }}"
+                                                        data-img="{{ $skill->img }}" data-cat-id="{{ $skill->cat_id }}"
                                                         data-name-ar="{{ $skill->name('ar') }}" data-toggle="modal"
                                                         data-target="#edit-modal">
                                                         <i class="fas fa-edit"></i>
@@ -126,7 +125,8 @@
                 </div>
                 <div class="modal-body">
                     @include('admin.includes.errors')
-                    <form id="add-new-form" enctype="multipart/form-data" action="{{ url('dashboard/skills/store') }}" method="POST">
+                    <form id="add-new-form" enctype="multipart/form-data" action="{{ url('dashboard/skills/store') }}"
+                        method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-6">
@@ -145,8 +145,8 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="exampleSelectBorder">Category:</label>
-                                    <select class="custom-select form-control-border" name="cat_id">
+                                    <label>Category:</label>
+                                    <select width="100%" class="custom-select form-control-border" name="cat_id" id="cat_id">
                                         @foreach ($cats as $cat)
                                             <option value="{{ $cat->id }}">{{ $cat->name('en') }}</option>
                                         @endforeach
@@ -253,6 +253,12 @@
             $('#edit-form-name_en').val(nameEn)
             $('#edit-form-name_ar').val(nameAr)
             $('#edit-form-cat_id').val(catId)
+        })
+        $(document).ready(function() {
+            $('#cat_id').select2({
+                placeholder: "Select an option",
+                width:'100%'
+            });
         })
     </script>
 @endsection

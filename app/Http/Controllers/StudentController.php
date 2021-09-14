@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class StudentController extends Controller
         $student = User::findOrFail($studentId);
         $student->exams()->updateExistingPivot($examId,[
             'status' => 'opened',
+            'created_at' => Carbon::now(),
         ]);
         return back();
     }

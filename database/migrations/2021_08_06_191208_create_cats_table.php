@@ -14,7 +14,7 @@ class CreateCatsTable extends Migration
     public function up()
     {
         Schema::create('cats', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('name',50);
             $table->boolean('active')->default(true);
             $table->timestamps();

@@ -14,7 +14,6 @@ class LangController extends Controller
             $lang = 'en';
         }
         $request->session()->put('lang',$lang);
-        // return back();
         return redirect()->back();
     }
 }
